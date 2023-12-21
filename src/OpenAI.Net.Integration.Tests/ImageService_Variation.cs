@@ -2,21 +2,21 @@
 using OpenAI.Net.Models.Requests;
 using System.Net;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+internal class ImageService_Variation : BaseTest
 {
-    internal class ImageService_Variation : BaseTest
+    [SetUp]
+    public void Init()
     {
-        [SetUp]
-        public void Init()
-        {
             /* ... */
             Thread.Sleep(5000);
         }
             
-        [TestCase(true, HttpStatusCode.OK, "256x256",TestName = "Variation_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, "32x32", TestName = "Variation_When_Invalid_Size_Fail")]
-        public async Task Variation(bool isSuccess,HttpStatusCode statusCode, string size)
-        {
+    [TestCase(true, HttpStatusCode.OK, "256x256",TestName = "Variation_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, "32x32", TestName = "Variation_When_Invalid_Size_Fail")]
+    public async Task Variation(bool isSuccess, HttpStatusCode statusCode, string size)
+    {
             var image = FileContentInfo.Load(@"Images\BabyOtter.png");
             var request = new ImageVariationRequest(image) { N = 1, Size = size};
 
@@ -29,10 +29,10 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.ErrorResponse?.Error?.Message?.Contains("is not one of ['256x256', '512x512', '1024x1024']"), isSuccess ? Is.EqualTo(null) : Is.EqualTo(true), "Error message not returned");
         }
 
-        [TestCase(true, HttpStatusCode.OK, "256x256", TestName = "Variation_Base64ToFileContent_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, "32x32", TestName = "Variation_Base64ToFileContent_When_Invalid_Size_Fail")]
-        public async Task Variation_Base64ToFileContent(bool isSuccess, HttpStatusCode statusCode, string size)
-        {
+    [TestCase(true, HttpStatusCode.OK, "256x256", TestName = "Variation_Base64ToFileContent_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, "32x32", TestName = "Variation_Base64ToFileContent_When_Invalid_Size_Fail")]
+    public async Task Variation_Base64ToFileContent(bool isSuccess, HttpStatusCode statusCode, string size)
+    {
 
             var generateResponse = await OpenAIService.Images.Generate("a cute baby otter", o => {
                 o.N = 1;
@@ -57,10 +57,10 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.ErrorResponse?.Error?.Message, isSuccess ? Is.EqualTo(null) : Contains.Substring("is not one of ['256x256', '512x512', '1024x1024'"), "Error message not returned");
         }
 
-        [TestCase(true, HttpStatusCode.OK, "256x256", TestName = "Variation_FileInfoFileContent_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, "32x32", TestName = "Variation_FileInfoFileContent_When_Invalid_Size_Fail")]
-        public async Task Variation_FileInfoFileContent(bool isSuccess, HttpStatusCode statusCode, string size)
-        {
+    [TestCase(true, HttpStatusCode.OK, "256x256", TestName = "Variation_FileInfoFileContent_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, "32x32", TestName = "Variation_FileInfoFileContent_When_Invalid_Size_Fail")]
+    public async Task Variation_FileInfoFileContent(bool isSuccess, HttpStatusCode statusCode, string size)
+    {
 
             var generateResponse = await OpenAIService.Images.Generate("a cute baby otter", o => {
                 o.N = 1;
@@ -80,5 +80,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.Result?.Data?[0].Url?.Contains("https://"), isSuccess ? Is.EqualTo(isSuccess) : Is.EqualTo(null), "Choice text not set");
             Assert.That(response.ErrorResponse?.Error?.Message, isSuccess ? Is.EqualTo(null) : Contains.Substring("is not one of ['256x256', '512x512', '1024x1024'"), "Error message not returned");
         }
-    }
 }

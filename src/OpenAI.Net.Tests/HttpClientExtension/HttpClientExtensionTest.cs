@@ -6,31 +6,31 @@ using OpenAI.Net.Models.Responses.Common;
 using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models;
 
-namespace OpenAI.Net.Tests.HttpClientTests
+namespace OpenAI.Net.Tests.HttpClientTests ;
+
+internal class HttpClientExtensionTest
 {
-    internal class HttpClientExtensionTest
-    {
-        const string jsonResponseString = @"{
+	const string jsonResponseString = @"{
                 ""id"": ""1"",
                 ""name"": ""test""
                
             }";
 
-        const string jsonResponseErrorString = @"{""error"":{""message"":""an error occured""}}";
-        const string invalidUriMessage = "An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set.";
+	const string jsonResponseErrorString = @"{""error"":{""message"":""an error occured""}}";
+	const string invalidUriMessage = "An invalid request URI was provided. Either the request URI must be an absolute URI or BaseAddress must be set.";
 
-        [SetUp]
-        public void Setup()
-        {
+	[SetUp]
+	public void Setup()
+	{
 
         }
 
-        [TestCase(HttpStatusCode.OK, true, false, "image.png", "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, Description = "Sucessfull Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, "image.png", "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true, Description = "Failed Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, "image.png", "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, Description = "Url error")]
-        [TestCase(HttpStatusCode.OK, true, false, null, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, Description = "Null Filename is defaulted")]
-        public async Task Test_OperationGetFileResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, string fileName, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet)
-        {
+	[TestCase(HttpStatusCode.OK, true, false, "image.png", "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, Description = "Sucessfull Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, "image.png", "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true, Description = "Failed Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, "image.png", "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, Description = "Url error")]
+	[TestCase(HttpStatusCode.OK, true, false, null, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, Description = "Null Filename is defaulted")]
+	public async Task Test_OperationGetFileResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, string fileName, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet)
+	{
             var imageEditRequest = new ImageEditRequest("a baby fish", new Models.FileContentInfo(new byte[] { 1 }, fileName??"FileNameTest"));
             var formDataContent = imageEditRequest.ToMultipartFormDataContent();
             formDataContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
@@ -66,11 +66,11 @@ namespace OpenAI.Net.Tests.HttpClientTests
         }
 
 
-        [TestCase(HttpStatusCode.OK, true, false, 1, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, Description = "Sucessfull Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true, Description = "Failed Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, Description = "Url error")]
-        public async Task Test_OperationDeleteResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, int? responseId, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet)
-        {
+	[TestCase(HttpStatusCode.OK, true, false, 1, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, Description = "Sucessfull Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true, Description = "Failed Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, Description = "Url error")]
+	public async Task Test_OperationDeleteResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, int? responseId, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet)
+	{
             HttpContent content = new StringContent(jsonResult);
 
             var res = new HttpResponseMessage { StatusCode = httpStatusCode, Content = content };
@@ -97,11 +97,11 @@ namespace OpenAI.Net.Tests.HttpClientTests
             Assert.That(response.StatusCode, Is.EqualTo(httpStatusCode), "StatusCode not set");
         }
 
-        [TestCase(HttpStatusCode.OK, true, false, 1, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false,  Description = "Sucessfull Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true,  Description = "Failed Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, Description = "Url error")]
-        public async Task Test_OperationGetResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, int? responseId, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet)
-        {
+	[TestCase(HttpStatusCode.OK, true, false, 1, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false,  Description = "Sucessfull Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true,  Description = "Failed Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, Description = "Url error")]
+	public async Task Test_OperationGetResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, int? responseId, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet)
+	{
             HttpContent content = new StringContent(jsonResult);
 
             var res = new HttpResponseMessage { StatusCode = httpStatusCode, Content = content };
@@ -130,11 +130,11 @@ namespace OpenAI.Net.Tests.HttpClientTests
 
 
 
-        [TestCase(HttpStatusCode.OK,true,false, 1, "v1/completions",null,null,jsonResponseString,false,1, Description = "Sucessfull Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString,true,1, Description = "Failed Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "v1/completions", "The Id field is required.", "The Id field is required.", jsonResponseString, false,null,  Description = "Model validation Request")]
-        public async Task Test_OperationPostResult(HttpStatusCode httpStatusCode,bool isSuccess,bool resultIsNull,int? responseId,string url,string exceptionMessage,string errorMessage,string jsonResult,bool errorResponseIsSet,int? requestId)
-        {
+	[TestCase(HttpStatusCode.OK,true,false, 1, "v1/completions",null,null,jsonResponseString,false,1, Description = "Sucessfull Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString,true,1, Description = "Failed Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "v1/completions", "The Id field is required.", "The Id field is required.", jsonResponseString, false,null,  Description = "Model validation Request")]
+	public async Task Test_OperationPostResult(HttpStatusCode httpStatusCode,bool isSuccess,bool resultIsNull,int? responseId,string url,string exceptionMessage,string errorMessage,string jsonResult,bool errorResponseIsSet,int? requestId)
+	{
             HttpContent content = new StringContent(jsonResult);
 
             var res = new HttpResponseMessage { StatusCode = httpStatusCode, Content = content };
@@ -162,12 +162,12 @@ namespace OpenAI.Net.Tests.HttpClientTests
             Assert.That(response.StatusCode, Is.EqualTo(httpStatusCode), "StatusCode not set");
         }
 
-        [TestCase(HttpStatusCode.OK, true, false, 1, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, 1, Description = "Sucessfull Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true, 1, Description = "Failed Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "The Id field is required.", "The Id field is required.", jsonResponseString, false, null, Description = "Model validation Request")]
-        [TestCase(HttpStatusCode.BadRequest, false, true, null, "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, 1, TestName = "Invalid Url")]
-        public async Task Test_OperationPostFormResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, int? responseId, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet, int? requestId)
-        {
+	[TestCase(HttpStatusCode.OK, true, false, 1, "https://api.openai.com/v1/completions", null, null, jsonResponseString, false, 1, Description = "Sucessfull Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "BadRequest", jsonResponseErrorString, jsonResponseErrorString, true, 1, Description = "Failed Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "https://api.openai.com/v1/completions", "The Id field is required.", "The Id field is required.", jsonResponseString, false, null, Description = "Model validation Request")]
+	[TestCase(HttpStatusCode.BadRequest, false, true, null, "", invalidUriMessage, invalidUriMessage, jsonResponseString, false, 1, TestName = "Invalid Url")]
+	public async Task Test_OperationPostFormResult(HttpStatusCode httpStatusCode, bool isSuccess, bool resultIsNull, int? responseId, string url, string exceptionMessage, string errorMessage, string jsonResult, bool errorResponseIsSet, int? requestId)
+	{
             HttpContent content = new StringContent(jsonResult);
 
             var res = new HttpResponseMessage { StatusCode = httpStatusCode, Content = content };
@@ -196,9 +196,9 @@ namespace OpenAI.Net.Tests.HttpClientTests
             Assert.That(response.StatusCode, Is.EqualTo(httpStatusCode), "StatusCode not set");
         }
 
-        [Test]
-        public async Task Test_ToMultipartFormDataContent()
-        {
+	[Test]
+	public async Task Test_ToMultipartFormDataContent()
+	{
             var imageEditRequest = new ImageEditRequest("a baby fish", new Models.FileContentInfo(new byte[] { 1 },"image.png")) { Mask = new Models.FileContentInfo(new byte[] { 2 }, "image2.png") };
             var formDataContent = imageEditRequest.ToMultipartFormDataContent();
 
@@ -214,9 +214,9 @@ namespace OpenAI.Net.Tests.HttpClientTests
             Assert.That(stringData.Contains(@"Content-Disposition: form-data; name=prompt"), Is.EqualTo(true));
         }
 
-        [Test]
-        public async Task Test_ToHttpContent()
-        {
+	[Test]
+	public async Task Test_ToHttpContent()
+	{
             var bytesValue = new byte[] { 1 };
             var stringValue = "a test";
 
@@ -242,9 +242,9 @@ namespace OpenAI.Net.Tests.HttpClientTests
             Assert.That(testNullRead, Is.EqualTo(""));
         }
 
-        [Test]
-        public void Test_GetPropertyName()
-        {
+	[Test]
+	public void Test_GetPropertyName()
+	{
             var imageEditRequest = new ImageEditRequest("a baby fish", new Models.FileContentInfo(new byte[] { 1 }, "image.png")) { ResponseFormat = "url" };
             
             var propWithJsonNameAttribute = imageEditRequest.GetType().GetProperties().FirstOrDefault(i => i.Name == "ResponseFormat");
@@ -256,9 +256,9 @@ namespace OpenAI.Net.Tests.HttpClientTests
             Assert.That(propertyNameWithNoAttribute, Is.EqualTo("prompt"));
         }
 
-        [Test]
-        public void Test_LoadAndSaveFile()
-        {
+	[Test]
+	public void Test_LoadAndSaveFile()
+	{
             var file = FileContentInfo.Load(@"Images\BabyCat.png");
 
             Assert.That(file.FileName, Is.EqualTo("BabyCat.png"));
@@ -269,5 +269,4 @@ namespace OpenAI.Net.Tests.HttpClientTests
 
             Assert.That(File.Exists(saveFileName),Is.EqualTo(true));
         }
-    }
 }

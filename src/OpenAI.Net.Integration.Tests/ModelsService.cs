@@ -3,14 +3,14 @@ using System.Linq;
 using System.Net;
 using System.Reflection;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+internal class ModelsService : BaseTest
 {
-    internal class ModelsService : BaseTest
+    [TestCase(ModelTypes.GPT35Turbo,true, HttpStatusCode.OK,TestName = "GetById_When_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound,TestName = "GetById_When_Invalid_Model_Fail")]
+    public async Task GetById(string model, bool isSuccess, HttpStatusCode statusCode)
     {
-        [TestCase(ModelTypes.GPT35Turbo,true, HttpStatusCode.OK,TestName = "GetById_When_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound,TestName = "GetById_When_Invalid_Model_Fail")]
-        public async Task GetById(string model,bool isSuccess, HttpStatusCode statusCode)
-        {
             var response = await OpenAIService.Models.Get(model);
 
             Assert.That(response.IsSuccess, Is.EqualTo(isSuccess), "Request failed");
@@ -18,9 +18,9 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.Result?.Id == ModelTypes.GPT35Turbo, Is.EqualTo(isSuccess), "Choices are not mapped correctly");
         }
 
-        [TestCase(true, HttpStatusCode.OK)]
-        public async Task GetAll(bool isSuccess, HttpStatusCode statusCode)
-        {
+    [TestCase(true, HttpStatusCode.OK)]
+    public async Task GetAll(bool isSuccess, HttpStatusCode statusCode)
+    {
             var response = await OpenAIService.Models.Get();
             
             Assert.That(response.IsSuccess, Is.EqualTo(isSuccess), "Request failed");
@@ -28,9 +28,9 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.Result?.Data.Count() > 0, Is.EqualTo(isSuccess), "Choices are not mapped correctly");
         }
 
-        [TestCase(true, HttpStatusCode.OK)]
-        public async Task ValidateModelTypesModel(bool isSuccess, HttpStatusCode statusCode)
-        {
+    [TestCase(true, HttpStatusCode.OK)]
+    public async Task ValidateModelTypesModel(bool isSuccess, HttpStatusCode statusCode)
+    {
             var response = await OpenAIService.Models.Get();
             var allModels = response?.Result?.Data.Select(i => i.Id).ToList()!;
             var definedModelTypes = typeof(ModelTypes).GetFields(BindingFlags.Public | BindingFlags.Static | BindingFlags.FlattenHierarchy).Select(fieldInfo => fieldInfo.GetRawConstantValue()?.ToString());
@@ -42,5 +42,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(invalidModelTypes.Count, Is.EqualTo(0), $"Invalid models found {string.Join("\r\n", invalidModelTypes)}");
             Assert.That(missingModelTypes.Count, Is.EqualTo(0), $"Missing models found {string.Join("\r\n", missingModelTypes)}");
         }
-    }
 }

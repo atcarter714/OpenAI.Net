@@ -3,13 +3,13 @@ using NUnit.Framework;
 using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models.Responses;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class ImageTests : BaseTest
 {
-    public class ImageTests : BaseTest
+    [Test]
+    public async Task Generate()
     {
-        [Test]
-        public async Task Generate()
-        {
             var request = CreateObjectWithRandomData<ImageGenerationRequest>();
             var responseObject = CreateObjectWithRandomData<ImageGenerationResponse>();
 
@@ -22,9 +22,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task Edit()
-        {
+    [Test]
+    public async Task Edit()
+    {
             var request = CreateObjectWithRandomData<ImageEditRequest>();
             var responseObject = CreateObjectWithRandomData<ImageGenerationResponse>();
 
@@ -37,9 +37,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task Variation()
-        {
+    [Test]
+    public async Task Variation()
+    {
             var request = CreateObjectWithRandomData<ImageVariationRequest>();
             var responseObject = CreateObjectWithRandomData<ImageGenerationResponse>();
 
@@ -51,5 +51,4 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result?.Data.Length.Should().BeGreaterThan(0);
             response.Result.Should().BeEquivalentTo(responseObject);
         }
-    }
 }

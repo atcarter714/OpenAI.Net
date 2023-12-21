@@ -1,12 +1,12 @@
 ﻿using OpenAI.Net.Models;
 
-namespace OpenAI.Net.Tests.RegistrationExtensions
+namespace OpenAI.Net.Tests.RegistrationExtensions ;
+
+public class OpenAIRegistrationOptionTests
 {
-    public class OpenAIRegistrationOptionTests
+    [Test]
+    public void Test_OpenAIRegistrationOptionDefaults()
     {
-        [Test]
-        public void Test_OpenAIRegistrationOptionDefaults()
-        {
             var registrationOption = new OpenAIServiceRegistrationOptions();
 
             Assert.That(registrationOption.ApiUrl, Is.EqualTo(OpenAIDefaults.ApiUrl));
@@ -15,5 +15,4 @@ namespace OpenAI.Net.Tests.RegistrationExtensions
 
             Assert.That(registrationOption.Defaults.TextCompletionModel, Is.EqualTo(OpenAIDefaults.TextCompletionModel));
         }
-    }
 }

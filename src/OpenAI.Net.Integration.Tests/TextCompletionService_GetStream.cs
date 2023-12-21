@@ -1,12 +1,12 @@
 ﻿using OpenAI.Net.Models.Requests;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+public class TextCompletionService_GetStream : BaseTest
 {
-    public class TextCompletionService_GetStream : BaseTest
+    [Test]
+    public async Task GetStream()
     {
-        [Test]
-        public async Task GetStream()
-        {
             var multipleQuestions =
                                     @"Q: my name is?
                                     A: timtim	
@@ -26,5 +26,4 @@ namespace OpenAI.Net.Integration.Tests
                 Assert.That(response.IsSuccess);
             }
         }
-    }
 }

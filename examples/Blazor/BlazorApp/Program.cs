@@ -3,12 +3,12 @@ using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Web;
 using OpenAI.Net;
 
-namespace BlazorApp
+namespace BlazorApp ;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
             var builder = WebApplication.CreateBuilder(args);
 
             //Add OpenAI
@@ -49,5 +49,4 @@ namespace BlazorApp
 
             app.Run();
         }
-    }
 }

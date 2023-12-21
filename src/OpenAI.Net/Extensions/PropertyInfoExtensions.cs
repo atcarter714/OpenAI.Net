@@ -1,12 +1,12 @@
 ﻿using System.Reflection;
 using System.Text.Json.Serialization;
 
-namespace OpenAI.Net
+namespace OpenAI.Net ;
+
+public static class PropertyInfoExtensions
 {
-    public static class PropertyInfoExtensions
+    public static string GetPropertyName(this PropertyInfo prop)
     {
-        public static string GetPropertyName(this PropertyInfo prop)
-        {
             var attribute = prop.GetCustomAttribute<JsonPropertyNameAttribute>();
             if (attribute != null)
             {
@@ -16,5 +16,4 @@ namespace OpenAI.Net
             return prop.Name.ToLowerInvariant();
         }
 
-    }
 }

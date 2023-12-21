@@ -2,11 +2,11 @@
 using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.ImagesService_Tests
+namespace OpenAI.Net.Tests.Services.ImagesService_Tests ;
+
+internal class ImageService_Generate : BaseServiceTest
 {
-    internal class ImageService_Generate : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
               ""created"": 1589478378,
               ""data"": [
                 {
@@ -19,15 +19,15 @@ namespace OpenAI.Net.Tests.Services.ImagesService_Tests
             }
             ";
 
-        [SetUp]
-        public void Setup()
-        {
+    [SetUp]
+    public void Setup()
+    {
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "Generate_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Generate_When_Fail")]
-        public async Task Generate(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "Generate_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Generate_When_Fail")]
+    public async Task Generate(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             string jsonRequest = null;
 
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/images/generations", "https://api.openai.com", (request) =>
@@ -47,10 +47,10 @@ namespace OpenAI.Net.Tests.Services.ImagesService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GenerateWithExtension_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GenerateWithExtension_When_Fail")]
-        public async Task GenerateWithExtension(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GenerateWithExtension_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GenerateWithExtension_When_Fail")]
+    public async Task GenerateWithExtension(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             string jsonRequest = null;
 
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/images/generations", "https://api.openai.com", (request) =>
@@ -76,10 +76,10 @@ namespace OpenAI.Net.Tests.Services.ImagesService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GenerateWithExtensionOptionOnly_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GenerateWithExtensionOptionOnly_When_Fail")]
-        public async Task GenerateWithExtensionOptionOnly(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GenerateWithExtensionOptionOnly_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GenerateWithExtensionOptionOnly_When_Fail")]
+    public async Task GenerateWithExtensionOptionOnly(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             string jsonRequest = null;
 
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/images/generations", "https://api.openai.com", (request) =>
@@ -106,5 +106,4 @@ namespace OpenAI.Net.Tests.Services.ImagesService_Tests
 
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

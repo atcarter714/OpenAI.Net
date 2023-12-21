@@ -3,13 +3,13 @@ using NUnit.Framework;
 using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models.Responses;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class ModerationTests : BaseTest
 {
-    public class ModerationTests : BaseTest
+    [Test]
+    public async Task Create()
     {
-        [Test]
-        public async Task Create()
-        {
             var request = CreateObjectWithRandomData<ModerationRequest>();
             var responseObject = CreateObjectWithRandomData<ModerationResponse>();
 
@@ -21,5 +21,4 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result?.Results.Should().HaveCountGreaterThan(1);
             response.Result.Should().BeEquivalentTo(responseObject);
         }
-    }
 }

@@ -1,9 +1,7 @@
-﻿namespace BlazorApp.Data
+﻿namespace BlazorApp.Data ;
+
+public class ChatInfo
 {
-    public class ChatInfo
-    {
-        public string Message { get; set; } = "";
-        public string User { get; set; } = "";
-    }
-         
+    public string Message { get; set; } = "";
+    public string User { get; set; } = "";
 }

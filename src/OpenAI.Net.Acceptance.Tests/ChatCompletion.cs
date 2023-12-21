@@ -5,13 +5,13 @@ using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models.Responses;
 using System.Text.Json;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+internal class ChatCompletionTests : BaseTest
 {
-    internal class ChatCompletionTests : BaseTest
+    [Test]
+    public async Task Get()
     {
-        [Test]
-        public async Task Get()
-        {
             var fixture = new Fixture();
 
             fixture.Customizations.Add(
@@ -32,9 +32,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(chatCompletionResponse);
         }
 
-        [Test]
-        public async Task GetStream()
-        {
+    [Test]
+    public async Task GetStream()
+    {
             var fixture = new Fixture();
 
             fixture.Customizations.Add(
@@ -70,5 +70,4 @@ namespace OpenAI.Net.Acceptance.Tests
 
             index.Should().Be(chatCompletionResponseList.Count);
         }
-    }
 }

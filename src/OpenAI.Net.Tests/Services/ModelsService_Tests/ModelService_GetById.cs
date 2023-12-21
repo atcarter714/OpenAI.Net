@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.ModelsService_Tests
+namespace OpenAI.Net.Tests.Services.ModelsService_Tests ;
+
+internal class ModelService_GetById : BaseServiceTest
 {
-    internal class ModelService_GetById : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                                             ""id"": ""babbage"",
                                             ""object"": ""model"",
                                             ""created"": 1649358449,
@@ -33,10 +33,10 @@ namespace OpenAI.Net.Tests.Services.ModelsService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GetById_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GetById_When_Fail")]
-        public async Task GetById(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GetById_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GetById_When_Fail")]
+    public async Task GetById(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/models/babbage");
 
             var service = new ModelsService(httpClient);
@@ -46,5 +46,4 @@ namespace OpenAI.Net.Tests.Services.ModelsService_Tests
 
             AssertResponse(response,isSuccess,errorMessage, responseStatusCode);
         }
-    }
 }

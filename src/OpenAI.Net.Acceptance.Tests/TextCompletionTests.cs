@@ -4,13 +4,13 @@ using OpenAI.Net.Models.Responses;
 using System.Text.Json;
 using FluentAssertions;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class TextCompletionTests : BaseTest
 {
-    public class TextCompletionTests : BaseTest
+    [Test]
+    public async Task Get()
     {
-        [Test]
-        public async Task Get()
-        {
             var textCompletionRequest = CreateObjectWithRandomData<TextCompletionRequest>();
             var textCompletionResponse = CreateObjectWithRandomData<TextCompletionResponse>();
 
@@ -23,9 +23,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(textCompletionResponse);
         }
 
-        [Test]
-        public async Task GetStream()
-        {
+    [Test]
+    public async Task GetStream()
+    {
             var textCompletionRequest = CreateObjectWithRandomData<TextCompletionRequest>();
             textCompletionRequest.Stream = true;
 
@@ -52,5 +52,4 @@ namespace OpenAI.Net.Acceptance.Tests
 
             index.Should().Be(textCompletionResponseList.Count);
         }
-    }
 }

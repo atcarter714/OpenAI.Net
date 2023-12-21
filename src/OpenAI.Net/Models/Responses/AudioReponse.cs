@@ -1,7 +1,6 @@
-﻿namespace OpenAI.Net.Models.Responses
+﻿namespace OpenAI.Net.Models.Responses ;
+
+public class AudioReponse
 {
-    public class AudioReponse
-    {
-        public string Text { get; set; }
-    }
+    public string Text { get; set; }
 }

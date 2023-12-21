@@ -2,46 +2,45 @@
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using OpenAI.Net;
 
-namespace WebApplication.Pages
+namespace WebApplication.Pages ;
+
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    readonly ILogger<IndexModel> _logger;
+    readonly IOpenAIService      _openAIService;
+
+    public List<string> Results { get; set; } = new();
+    public string ErrorMessage { get; set; } = "";
+    public IndexModel(ILogger<IndexModel> logger, IOpenAIService openAIService)
     {
-        private readonly ILogger<IndexModel> _logger;
-        private readonly IOpenAIService _openAIService;
+        _logger        = logger;
+        _openAIService = openAIService;
+    }
 
-        public List<string> Results { get; set; } = new List<string>();
-        public string ErrorMessage { get; set; } = "";
-        public IndexModel(ILogger<IndexModel> logger,IOpenAIService openAIService)
+    public void OnGet()
+    {
+
+    }
+
+    [BindProperty]
+    public string SearchText { get; set; } = "What does USA stand for?";
+    [BindProperty]
+    public int MaxResults { get; set; } = 1;
+    [BindProperty]
+    public int MaxTokens { get; set; } = 500;
+    public async Task OnPost()
+    {
+        var response = await _openAIService.TextCompletion.Get(SearchText, o => {
+                                                                               o.N         = MaxResults;
+                                                                               o.MaxTokens = MaxTokens;
+                                                                           });
+        if(response.IsSuccess)
         {
-            _logger = logger;
-            _openAIService = openAIService;
+            Results = response.Result!.Choices.Select(i=> i.Text).ToList();
         }
-
-        public void OnGet()
+        else
         {
-
-        }
-
-        [BindProperty]
-        public string SearchText { get; set; } = "What does USA stand for?";
-        [BindProperty]
-        public int MaxResults { get; set; } = 1;
-        [BindProperty]
-        public int MaxTokens { get; set; } = 500;
-        public async Task OnPost()
-        {
-            var response = await _openAIService.TextCompletion.Get(SearchText, o => {
-                o.N = MaxResults;
-                o.MaxTokens = MaxTokens;
-            });
-            if(response.IsSuccess)
-            {
-                Results = response.Result!.Choices.Select(i=> i.Text).ToList();
-            }
-            else
-            {
-                ErrorMessage = response.ErrorMessage;
-            }
+            ErrorMessage = response.ErrorMessage;
         }
     }
 }

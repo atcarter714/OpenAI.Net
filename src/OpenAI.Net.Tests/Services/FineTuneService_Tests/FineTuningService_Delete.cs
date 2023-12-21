@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.FineTuneService_Tests
+namespace OpenAI.Net.Tests.Services.FineTuneService_Tests ;
+
+internal class FineTuningService_Delete : BaseServiceTest
 {
-    internal class FineTuningService_Delete : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                                         ""object"": ""file"",
                                         ""id"": ""file-GB1kRstIY1YqJQBZ6rkUVphO"",
                                         ""deleted"":true
@@ -14,10 +14,10 @@ namespace OpenAI.Net.Tests.Services.FineTuneService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "Delete_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Delete_When_Fail")]
-        public async Task Delete(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "Delete_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Delete_When_Fail")]
+    public async Task Delete(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/models/modelId");
 
             var service = new FineTuneService(httpClient);
@@ -30,5 +30,4 @@ namespace OpenAI.Net.Tests.Services.FineTuneService_Tests
             Assert.That(response.Result?.Deleted == true, Is.EqualTo(isSuccess));
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

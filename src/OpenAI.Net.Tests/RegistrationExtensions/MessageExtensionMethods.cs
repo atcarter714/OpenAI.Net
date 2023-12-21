@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace OpenAI.Net.Tests.RegistrationExtensions
-{
-    public class MessageExtensionMethods
-    {
+namespace OpenAI.Net.Tests.RegistrationExtensions ;
 
-        [Test]
-        public void SinggeMessageToList()
-        {
+public class MessageExtensionMethods
+{
+
+    [Test]
+    public void SinggeMessageToList()
+    {
             var message = Message.Create(ChatRoleType.User, "Test");
 
             var list = message.ToList();
@@ -20,5 +20,4 @@ namespace OpenAI.Net.Tests.RegistrationExtensions
             Assert.That(list.FirstOrDefault().Role, Is.EqualTo(ChatRoleType.User));
             Assert.That(list.FirstOrDefault().Content, Is.EqualTo("Test"));
         }
-    }
 }

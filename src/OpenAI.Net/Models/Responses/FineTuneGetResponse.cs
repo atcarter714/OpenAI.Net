@@ -1,8 +1,7 @@
-﻿namespace OpenAI.Net.Models.Responses
+﻿namespace OpenAI.Net.Models.Responses ;
+
+public class FineTuneGetResponse
 {
-    public class FineTuneGetResponse
-    {
-        public string Object { get; set; }
-        public FineTuneResponse[] Data { get; set; }
-    }
+    public string Object { get; set; }
+    public FineTuneResponse[] Data { get; set; }
 }

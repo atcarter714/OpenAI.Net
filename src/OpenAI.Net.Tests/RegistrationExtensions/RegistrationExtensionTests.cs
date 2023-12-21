@@ -1,13 +1,13 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.RegistrationExtensions
+namespace OpenAI.Net.Tests.RegistrationExtensions ;
+
+public class RegistrationExtensionTests
 {
-    public class RegistrationExtensionTests
+    [Test]
+    public void ServiceCollection_AddOpenAIServices()
     {
-        [Test]
-        public void ServiceCollection_AddOpenAIServices()
-        {
             var apiUrl = "https://api.openai.com/";
             var apiKey = "ApiKey";
             var organizationId = "OrgId";
@@ -44,9 +44,9 @@ namespace OpenAI.Net.Tests.RegistrationExtensions
             Assert.That(service.HttpClient.DefaultRequestHeaders.FirstOrDefault(i=> i.Key == "OpenAI-Organization").Value.First(), Is.EqualTo(organizationId));
         }
 
-        [Test]
-        public void ServiceCollection_AddOpenAIServicesWithOptions()
-        {
+    [Test]
+    public void ServiceCollection_AddOpenAIServicesWithOptions()
+    {
             var apiUrl = "https://api.openai.com/";
             var apiKey = "ApiKey";
             var organizationId = "OrgId";
@@ -87,5 +87,4 @@ namespace OpenAI.Net.Tests.RegistrationExtensions
             Assert.That(service.HttpClient.DefaultRequestHeaders.FirstOrDefault(i => i.Key == "OpenAI-Organization").Value.First(), Is.EqualTo(organizationId));
         }
 
-    }
 }

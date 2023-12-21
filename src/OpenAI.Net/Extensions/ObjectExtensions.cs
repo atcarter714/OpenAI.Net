@@ -1,40 +1,39 @@
 ﻿
 using System.ComponentModel.DataAnnotations;
 
-namespace OpenAI.Net
+namespace OpenAI.Net ;
+
+public static class ObjectExtensions
 {
-    public static class ObjectExtensions
+    public static void Validate(this object @object)
     {
-        public static void Validate(this object @object)
+        ICollection<ValidationResult> validationErrors = new List<ValidationResult>();
+        Validator.TryValidateObject(@object, new ValidationContext(@object), validationErrors);
+        if (validationErrors.Count > 0)
         {
-            ICollection<ValidationResult> validationErrors = new List<ValidationResult>();
-            Validator.TryValidateObject(@object, new ValidationContext(@object), validationErrors);
-            if (validationErrors.Count > 0)
-            {
-                throw new ArgumentException(string.Join(Environment.NewLine, validationErrors));
-            }
+            throw new ArgumentException(string.Join(Environment.NewLine, validationErrors));
+        }
+    }
+
+    public static HttpContent ToHttpContent(this object value)
+    {
+        if (value is byte[])
+        {
+            return new ByteArrayContent((byte[])value);
         }
 
-        public static HttpContent ToHttpContent(this object value)
-        {
-            if (value is byte[])
-            {
-                return new ByteArrayContent((byte[])value);
-            }
+        return new StringContent(value?.ToString() ?? "");
+    }
 
-            return new StringContent(value?.ToString() ?? "");
+    public static MultipartFormDataContent ToMultipartFormDataContent(this object @object)
+    {
+        MultipartFormDataContent formData = new();
+
+        foreach (var prop in @object.GetType().GetProperties())
+        {
+            formData.AddField(prop, @object);
         }
 
-        public static MultipartFormDataContent ToMultipartFormDataContent(this object @object)
-        {
-            MultipartFormDataContent formData = new MultipartFormDataContent();
-
-            foreach (var prop in @object.GetType().GetProperties())
-            {
-                formData.AddField(prop, @object);
-            }
-
-            return formData;
-        }
+        return formData;
     }
 }

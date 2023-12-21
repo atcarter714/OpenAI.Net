@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.FilesService_Tests
+namespace OpenAI.Net.Tests.Services.FilesService_Tests ;
+
+internal class FileService_Delete : BaseServiceTest
 {
-    internal class FileService_Delete : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                                         ""object"": ""file"",
                                         ""id"": ""file-GB1kRstIY1YqJQBZ6rkUVphO"",
                                         ""deleted"":true
@@ -14,10 +14,10 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName ="Delete_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", TestName = "Delete_When_Fail")]
-        public async Task Delete(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName ="Delete_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", TestName = "Delete_When_Fail")]
+    public async Task Delete(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files/1");
 
             var service = new FilesService(httpClient);
@@ -30,5 +30,4 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(response.Result?.Deleted == true, Is.EqualTo(isSuccess));
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

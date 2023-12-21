@@ -1,11 +1,11 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace OpenAI.Net.Models
+namespace OpenAI.Net.Models ;
+
+public class FileContentInfo
 {
-    public class FileContentInfo
+    public FileContentInfo(byte[] fileContent, string fileName) 
     {
-        public FileContentInfo(byte[] fileContent, string fileName) 
-        {
             if(fileContent == null || fileContent.Length == 0)
             {
                 throw new ArgumentException("FileContent is required");
@@ -19,21 +19,20 @@ namespace OpenAI.Net.Models
             FileContent = fileContent;
             FileName = fileName;
         }
-        [Required]
-        public byte[] FileContent { get; set; }
-        [Required]
-        public string FileName { get; set; }
+    [Required]
+    public byte[] FileContent { get; set; }
+    [Required]
+    public string FileName { get; set; }
 
-        public static FileContentInfo Load(string file)
-        {
+    public static FileContentInfo Load(string file)
+    {
             var bytes = File.ReadAllBytes(file);
             var name = new FileInfo(file).Name;
             return new FileContentInfo(bytes, name);
         }
 
-        public void Save(string path)
-        {
+    public void Save(string path)
+    {
             File.WriteAllBytes(path, FileContent);
         }
-    }
 }

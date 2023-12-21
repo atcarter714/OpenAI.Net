@@ -1,7 +1,6 @@
-﻿namespace OpenAI.Net.Services.Interfaces
+﻿namespace OpenAI.Net.Services.Interfaces ;
+
+public interface IBaseService
 {
-    public interface IBaseService
-    {
-        HttpClient HttpClient { get; }
-    }
+    HttpClient HttpClient { get; }
 }

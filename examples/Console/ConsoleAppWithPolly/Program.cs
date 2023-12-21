@@ -4,12 +4,12 @@ using OpenAI.Net;
 using Polly.Extensions.Http;
 using Polly;
 
-namespace ConsoleAppWithPolly
+namespace ConsoleAppWithPolly ;
+
+internal class Program
 {
-    internal class Program
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
             using var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((builder, services) =>
             {
@@ -45,5 +45,4 @@ namespace ConsoleAppWithPolly
                                                                                 retryAttempt)));
             }
         }
-    }
 }

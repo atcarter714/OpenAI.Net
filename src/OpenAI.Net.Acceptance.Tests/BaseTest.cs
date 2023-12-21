@@ -9,180 +9,171 @@ using WireMock.RequestBuilders;
 using WireMock.ResponseBuilders;
 using WireMock.Server;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class BaseTest : IDisposable
 {
-    public class BaseTest : IDisposable
+    public readonly JsonSerializerOptions JsonSerializerOptions = new()
     {
-        public readonly JsonSerializerOptions JsonSerializerOptions = new JsonSerializerOptions()
+        DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
+        PropertyNamingPolicy   = JsonNamingPolicy.CamelCase
+    };
+    public readonly WireMockServer? WireMockServer;
+    public TestConfig Config { get; private set; }
+
+    IServiceProvider _serviceProvider;
+    public BaseTest()
+    {
+        WireMockServer = WireMockServer.Start();
+        Config = new TestConfig
         {
-            DefaultIgnoreCondition = System.Text.Json.Serialization.JsonIgnoreCondition.WhenWritingNull,
-            PropertyNamingPolicy = JsonNamingPolicy.CamelCase
+            Apikey         = "ABC",
+            ApiUrl         = WireMockServer?.Url ?? "",
+            OrganizationId = "My-Org-Id"
         };
-        public readonly WireMockServer? WireMockServer;
-        public TestConfig Config { get; private set; }
 
-        private IServiceProvider _serviceProvider;
-        public BaseTest()
-        {
-            WireMockServer = WireMockServer.Start();
-            Config = new TestConfig
-            {
-                Apikey = "ABC",
-                ApiUrl = WireMockServer?.Url ?? "",
-                OrganizationId = "My-Org-Id"
-            };
+        var configuration = new ConfigurationBuilder()
+                            .AddUserSecrets<BaseTest>()
+                            .Build();
 
-            var configuration = new ConfigurationBuilder()
-           .AddUserSecrets<BaseTest>()
-           .Build();
+        var serviceCollection = new ServiceCollection();
+        serviceCollection.AddOpenAIServices(options => {
+                                                options.ApiKey         = Config.Apikey;
+                                                options.ApiUrl         = Config.ApiUrl;
+                                                options.OrganizationId = Config.OrganizationId;
+                                            });
 
-            var serviceCollection = new ServiceCollection();
-            serviceCollection.AddOpenAIServices(options => {
-                options.ApiKey = Config.Apikey;
-                options.ApiUrl = Config.ApiUrl;
-                options.OrganizationId = Config.OrganizationId;
-            });
+        _serviceProvider = serviceCollection.BuildServiceProvider();
+    }
 
-            _serviceProvider = serviceCollection.BuildServiceProvider();
-        }
+    public IOpenAIService OpenAIService => _serviceProvider.GetRequiredService<IOpenAIService>() ;
 
-        public IOpenAIService OpenAIService
-        {
-            get
-            {
-                return _serviceProvider.GetRequiredService<IOpenAIService>();
-            }
-        }
+    public T CreateObjectWithRandomData<T>()
+    {
+        var fixture = new Fixture();
+        return fixture.Create<T>();
+    }
 
-        public T CreateObjectWithRandomData<T>()
-        {
-            var fixture = new Fixture();
-            return fixture.Create<T>();
-        }
+    public void ConfigureWireMockPostJson<TReqeust,TResponse>(string path, TReqeust reqeust, TResponse response)
+    {
+        var body = (response is string) ? response as string :
+                       JsonSerializer.Serialize(
+                                                response,
+                                                this.JsonSerializerOptions);
 
-        public void ConfigureWireMockPostJson<TReqeust,TResponse>(string path,TReqeust reqeust,TResponse response)
-        {
-            var body = (response is string) ? response as string :
-                     JsonSerializer.Serialize(
-                response,
-                this.JsonSerializerOptions);
+        this.WireMockServer?.Given(
+                                   Request.Create()
+                                          .WithPath(path)
+                                          .WithHeader("Authorization", $"Bearer {Config.Apikey}")
+                                          .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
+                                          .WithHeader("Content-Type", "application/json; charset=utf-8")
+                                          .UsingPost()
+                                          .WithBody(JsonSerializer.Serialize(
+                                                                             reqeust,
+                                                                             this.JsonSerializerOptions)))
+            .RespondWith(
+                         Response.Create()
+                                 .WithBody(body??""));
+    }
 
-            this.WireMockServer?.Given(
-              Request.Create()
-              .WithPath(path)
-              .WithHeader("Authorization", $"Bearer {Config.Apikey}")
-              .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
-              .WithHeader("Content-Type", "application/json; charset=utf-8")
-              .UsingPost()
-              .WithBody(JsonSerializer.Serialize(
-                  reqeust,
-                  this.JsonSerializerOptions)))
-              .RespondWith(
-                 Response.Create()
-              .WithBody(body??""));
-        }
+    public void ConfigureWireMockPostMultipartFormData<TReqeust, TResponse>(string path, TReqeust reqeust, TResponse response)
+    {
+        var body = (response is string) ? response as string :
+                       JsonSerializer.Serialize(
+                                                response,
+                                                this.JsonSerializerOptions);
 
-        public void ConfigureWireMockPostMultipartFormData<TReqeust, TResponse>(string path, TReqeust reqeust, TResponse response)
-        {
-            var body = (response is string) ? response as string :
-                    JsonSerializer.Serialize(
-               response,
-               this.JsonSerializerOptions);
-
-            var formData = reqeust?.ToMultipartFormDataContent();
+        var formData = reqeust?.ToMultipartFormDataContent();
       
-            this.WireMockServer?.Given(
-              Request.Create()
-              .WithPath(path)
-              .WithHeader("Authorization", $"Bearer {Config.Apikey}")
-              .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
-              .WithHeader("Content-Type", "multipart/form-data; boundary=*")
-              .WithHeader("Content-Length", $"{formData?.Headers.ContentLength}")
-              .UsingPost()
-              )
-              .RespondWith(
-                 Response.Create()
-              .WithBody(body ?? ""));
-        }
-
-
-        public void ConfigureWireMockDelete<TResponse>(string path, TResponse response)
-        {
-
-            var body = (response is string) ? response as string :
-                    JsonSerializer.Serialize(
-               response,
-               this.JsonSerializerOptions);
-
-            this.WireMockServer?.Given(
-              Request.Create()
-              .WithPath(path)
-              .WithHeader("Authorization", $"Bearer {Config.Apikey}")
-              .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
-              .UsingDelete())
-              .RespondWith(
-                 Response.Create()
-              .WithBody(body ?? ""));
-        }
-
-        public void ConfigureWireMockGet<TResponse>(string path, TResponse response)
-        {
-            var body = (response is string) ? response as string :
-                   JsonSerializer.Serialize(
-              response,
-              this.JsonSerializerOptions);
-
-            this.WireMockServer?.Given(
-              Request.Create()
-              .WithPath(path)
-              .WithHeader("Authorization", $"Bearer {Config.Apikey}")
-              .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
-              .UsingGet())
-              .RespondWith(
-                 Response.Create()
-              .WithBody(body ?? ""));
-        }
-
-        public void ConfigureWireMockGetBytes(string path, FileContentInfo response)
-        {
-            this.WireMockServer?.Given(
-              Request.Create()
-              .WithPath(path)
-              .WithHeader("Authorization", $"Bearer {Config.Apikey}")
-              .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
-              .UsingGet())
-              .RespondWith(
-                 Response.Create()
-              .WithHeader("Content-Disposition", $@"attachment; filename=""{response.FileName}""")
-              .WithBody(response.FileContent)
-              );
-        }
-
-        public void Dispose()
-        {
-            this.WireMockServer?.Dispose();
-        }
+        this.WireMockServer?.Given(
+                                   Request.Create()
+                                          .WithPath(path)
+                                          .WithHeader("Authorization", $"Bearer {Config.Apikey}")
+                                          .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
+                                          .WithHeader("Content-Type", "multipart/form-data; boundary=*")
+                                          .WithHeader("Content-Length", $"{formData?.Headers.ContentLength}")
+                                          .UsingPost()
+                                  )
+            .RespondWith(
+                         Response.Create()
+                                 .WithBody(body ?? ""));
     }
 
 
-    public class TestConfig
+    public void ConfigureWireMockDelete<TResponse>(string path, TResponse response)
     {
-        public string? Apikey { get;  set; }
-        public string? ApiUrl { get;  set; }
-        public string? OrganizationId { get;  set; }
+
+        var body = (response is string) ? response as string :
+                       JsonSerializer.Serialize(
+                                                response,
+                                                this.JsonSerializerOptions);
+
+        this.WireMockServer?.Given(
+                                   Request.Create()
+                                          .WithPath(path)
+                                          .WithHeader("Authorization", $"Bearer {Config.Apikey}")
+                                          .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
+                                          .UsingDelete())
+            .RespondWith(
+                         Response.Create()
+                                 .WithBody(body ?? ""));
     }
 
-    public static class AutoFixtureExtensions
+    public void ConfigureWireMockGet<TResponse>(string path, TResponse response)
     {
-        public static IPostprocessComposer<T> WithValues<T, TProperty>(this IPostprocessComposer<T> composer,
-        Expression<Func<T, TProperty>> propertyPicker,
-        params TProperty[] values)
-        {
-            var queue = new Queue<TProperty>(values);
+        var body = (response is string) ? response as string :
+                       JsonSerializer.Serialize(
+                                                response,
+                                                this.JsonSerializerOptions);
 
-            return composer.With(propertyPicker, () => queue.Dequeue());
-        }
+        this.WireMockServer?.Given(
+                                   Request.Create()
+                                          .WithPath(path)
+                                          .WithHeader("Authorization", $"Bearer {Config.Apikey}")
+                                          .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
+                                          .UsingGet())
+            .RespondWith(
+                         Response.Create()
+                                 .WithBody(body ?? ""));
     }
-         
 
+    public void ConfigureWireMockGetBytes(string path, FileContentInfo response)
+    {
+        this.WireMockServer?.Given(
+                                   Request.Create()
+                                          .WithPath(path)
+                                          .WithHeader("Authorization", $"Bearer {Config.Apikey}")
+                                          .WithHeader("OpenAI-Organization", $"{Config.OrganizationId}")
+                                          .UsingGet())
+            .RespondWith(
+                         Response.Create()
+                                 .WithHeader("Content-Disposition", $@"attachment; filename=""{response.FileName}""")
+                                 .WithBody(response.FileContent)
+                        );
+    }
+
+    public void Dispose()
+    {
+        this.WireMockServer?.Dispose();
+    }
+}
+
+
+public class TestConfig
+{
+    public string? Apikey { get;  set; }
+    public string? ApiUrl { get;  set; }
+    public string? OrganizationId { get;  set; }
+}
+
+public static class AutoFixtureExtensions
+{
+    public static IPostprocessComposer<T> WithValues<T, TProperty>(this IPostprocessComposer<T>   composer,
+                                                                   Expression<Func<T, TProperty>> propertyPicker,
+                                                                   params TProperty[]             values)
+    {
+        var queue = new Queue<TProperty>(values);
+
+        return composer.With(propertyPicker, () => queue.Dequeue());
+    }
 }

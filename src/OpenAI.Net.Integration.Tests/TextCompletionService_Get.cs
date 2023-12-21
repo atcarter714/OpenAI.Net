@@ -2,15 +2,15 @@
 using OpenAI.Net.Models.Requests;
 using System.Net;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+public class TextCompletionService_Get : BaseTest
 {
-    public class TextCompletionService_Get : BaseTest
+    [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK,null, TestName = "Get_When_Success")]
+    [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK, true, TestName = "Get_When_Echo_True_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound,false, TestName = "Get_When_Fail")]
+    public async Task Get(string model, bool isSuccess, HttpStatusCode statusCode, bool? echo)
     {
-        [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK,null, TestName = "Get_When_Success")]
-        [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK, true, TestName = "Get_When_Echo_True_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound,false, TestName = "Get_When_Fail")]
-        public async Task Get(string model,bool isSuccess, HttpStatusCode statusCode, bool? echo)
-        {
             var request = new TextCompletionRequest(model, "Say this is a test");
            
             if (echo.HasValue)
@@ -34,11 +34,11 @@ namespace OpenAI.Net.Integration.Tests
             }
         }
 
-        [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK, null, TestName = "GetExtension_When_Success")]
-        [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK, true, TestName = "GetExtension_When_Echo_True_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound, false, TestName = "GetExtension_When_Fail")]
-        public async Task GetExtension(string model, bool isSuccess, HttpStatusCode statusCode, bool? echo)
-        {
+    [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK, null, TestName = "GetExtension_When_Success")]
+    [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK, true, TestName = "GetExtension_When_Echo_True_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound, false, TestName = "GetExtension_When_Fail")]
+    public async Task GetExtension(string model, bool isSuccess, HttpStatusCode statusCode, bool? echo)
+    {
             var request = new TextCompletionRequest(model, "Say this is a test");
 
 
@@ -69,10 +69,10 @@ namespace OpenAI.Net.Integration.Tests
         }
 
 
-        [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK,  TestName = "GetList_When_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound,  TestName = "GetList_When_Fail")]
-        public async Task GetListExtension(string model, bool isSuccess, HttpStatusCode statusCode)
-        {
+    [TestCase(ModelTypes.TextDavinci003, true, HttpStatusCode.OK,  TestName = "GetList_When_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound,  TestName = "GetList_When_Fail")]
+    public async Task GetListExtension(string model, bool isSuccess, HttpStatusCode statusCode)
+    {
             var request = new TextCompletionRequest(model, "Say this is a test");
 
             var prompts = new List<string>()
@@ -93,9 +93,9 @@ namespace OpenAI.Net.Integration.Tests
             });
         }
       
-        [Test]
-        public async Task GetWithDefaultModel()
-        {
+    [Test]
+    public async Task GetWithDefaultModel()
+    {
             var request = new TextCompletionRequest(OpenAIDefaults.TextCompletionModel, "Say this is a test");
             var response = await OpenAIService.TextCompletion.Get(request);
 
@@ -103,5 +103,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
             Assert.That(response.Result?.Choices?.Length == 1, Is.EqualTo(true), "Choices are not mapped correctly");
         }
-    }
 }

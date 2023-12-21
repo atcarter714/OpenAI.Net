@@ -1,8 +1,7 @@
-﻿namespace OpenAI.Net
+﻿namespace OpenAI.Net ;
+
+public static class ImageModelOptions
 {
-    public static class ImageModelOptions
-    {
-        public const string Dalle2 = "dall-e-2";
-        public const string Dalle3 = "dall-e-3";
-    }
+    public const string Dalle2 = "dall-e-2";
+    public const string Dalle3 = "dall-e-3";
 }

@@ -2,12 +2,12 @@
 using OpenAI.Net.Models;
 using System.Reflection;
 
-namespace OpenAI.Net
+namespace OpenAI.Net ;
+
+public static class MultipartFormDataContentExtensions
 {
-    public static class MultipartFormDataContentExtensions
+    public static void AddField(this MultipartFormDataContent formData, PropertyInfo prop, object @object)
     {
-        public static void AddField(this MultipartFormDataContent formData, PropertyInfo prop, object @object)
-        {
             var value = prop.GetValue(@object);
 
             if (value != null)
@@ -26,5 +26,4 @@ namespace OpenAI.Net
                 }
             }
         }
-    }
 }

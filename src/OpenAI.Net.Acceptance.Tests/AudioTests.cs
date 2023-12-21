@@ -3,13 +3,13 @@ using NUnit.Framework;
 using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models.Responses;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class AudioTests : BaseTest
 {
-    public class AudioTests : BaseTest
+    [Test]
+    public async Task GetTranscription()
     {
-        [Test]
-        public async Task GetTranscription()
-        {
             var request = CreateObjectWithRandomData<CreateTranscriptionRequest>();
             var responseObject = CreateObjectWithRandomData<AudioReponse>();
 
@@ -22,9 +22,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task GetTranslation()
-        {
+    [Test]
+    public async Task GetTranslation()
+    {
             var request = CreateObjectWithRandomData<CreateTranslationRequest>();
             var responseObject = CreateObjectWithRandomData<AudioReponse>();
 
@@ -38,5 +38,4 @@ namespace OpenAI.Net.Acceptance.Tests
         }
 
 
-    }
 }

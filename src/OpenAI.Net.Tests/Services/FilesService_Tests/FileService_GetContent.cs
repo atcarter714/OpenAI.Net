@@ -2,11 +2,11 @@
 using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.FilesService_Tests
+namespace OpenAI.Net.Tests.Services.FilesService_Tests ;
+
+internal class FileService_GetContent : BaseServiceTest
 {
-    internal class FileService_GetContent : BaseServiceTest
-    {
-        const string responseJson = @"
+    const string responseJson = @"
                                     {
                                         ""object"": ""file"",
                                         ""id"": ""file-GB1kRstIY1YqJQBZ6rkUVphO"",
@@ -20,10 +20,10 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "GetContent_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GetContent_When_Fail")]
-        public async Task GetContent(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "GetContent_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GetContent_When_Fail")]
+    public async Task GetContent(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var imageEditRequest = new ImageEditRequest("a baby fish", new Models.FileContentInfo(new byte[] { 1 }, "image.png"));
             var formDataContent = imageEditRequest.ToMultipartFormDataContent();
             formDataContent.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("form-data");
@@ -43,5 +43,4 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(response.Result?.FileName == "image.png", Is.EqualTo(isSuccess));
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

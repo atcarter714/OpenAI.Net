@@ -5,12 +5,12 @@ using OpenAI.Net;
 using OpenAI.Net.Models.Responses;
 using System.Text.Json;
 
-namespace CodeGeneratorTest
+namespace CodeGeneratorTest ;
+
+internal class Program
 {
-    internal class Program
+    static async Task Main(string[] args)
     {
-        static async Task Main(string[] args)
-        {
             using var host = Host.CreateDefaultBuilder(args)
             .ConfigureServices((builder, services) =>
             {
@@ -37,5 +37,4 @@ namespace CodeGeneratorTest
             //Console.WriteLine("Press any key to exit");
             //Console.ReadLine();
         }
-    }
 }

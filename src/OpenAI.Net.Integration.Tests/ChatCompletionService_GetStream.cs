@@ -1,12 +1,12 @@
 ﻿using OpenAI.Net.Models.Requests;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+public class ChatCompletionService_GetStream : BaseTest
 {
-    public class ChatCompletionService_GetStream : BaseTest
+    [Test]
+    public async Task GetStream()
     {
-        [Test]
-        public async Task GetStream()
-        {
             var prompt = @"Say this is a test";
             var message = Message.Create(ChatRoleType.User, prompt);
             var request = new ChatCompletionRequest(message);
@@ -17,9 +17,9 @@ namespace OpenAI.Net.Integration.Tests
             }
         }
 
-        [Test]
-        public async Task GetStreamWithListExtension()
-        {
+    [Test]
+    public async Task GetStreamWithListExtension()
+    {
             var messages = new List<Message>
             {
                 Message.Create(ChatRoleType.System, "You are a helpful assistant."),
@@ -33,5 +33,4 @@ namespace OpenAI.Net.Integration.Tests
                 Assert.True(response?.IsSuccess, "Failed to get chat stream", response?.ErrorMessage);
             }
         }
-    }
 }

@@ -3,15 +3,15 @@ using System.Drawing;
 using System.Net;
 using OpenAI.Net;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+internal class ImageService_Generate : BaseTest
 {
-    internal class ImageService_Generate : BaseTest
+    [TestCase("A cute baby sea otter", 1,true, HttpStatusCode.OK , "256x256", TestName = "Generate_When_Success")]
+    [TestCase("A cute baby sea otter", 1, false, HttpStatusCode.BadRequest, "32x32", TestName = "Generate_When_Invalid_Size_Fail")]
+    //[TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Failed Request")]
+    public async Task Generate(string prompt, int noOfImages, bool isSuccess, HttpStatusCode statusCode, string size)
     {
-        [TestCase("A cute baby sea otter", 1,true, HttpStatusCode.OK , "256x256", TestName = "Generate_When_Success")]
-        [TestCase("A cute baby sea otter", 1, false, HttpStatusCode.BadRequest, "32x32", TestName = "Generate_When_Invalid_Size_Fail")]
-        //[TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Failed Request")]
-        public async Task Generate(string prompt,int noOfImages,bool isSuccess, HttpStatusCode statusCode,string size)
-        {
             var request = new ImageGenerationRequest(prompt) { N=noOfImages,Size= size };
 
             var response = await OpenAIService.Images.Generate(request);
@@ -23,11 +23,11 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.ErrorResponse?.Error?.Message?.Contains("is not one of ['256x256', '512x512', '1024x1024', '1024x1792', '1792x1024']"), isSuccess ? Is.EqualTo(null) :  Is.EqualTo(true),"Error message not returned");
         }
 
-        [TestCase("A cute baby sea otter", 1, true, HttpStatusCode.OK, "256x256", TestName = "GenerateBase64_When_Success")]
-        [TestCase("A cute baby sea otter", 1, false, HttpStatusCode.BadRequest, "32x32", TestName = "GenerateBase64_When_Invalid_Size_Fail")]
-        //[TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Failed Request")]
-        public async Task GenerateBase64(string prompt, int noOfImages, bool isSuccess, HttpStatusCode statusCode, string size)
-        {
+    [TestCase("A cute baby sea otter", 1, true, HttpStatusCode.OK, "256x256", TestName = "GenerateBase64_When_Success")]
+    [TestCase("A cute baby sea otter", 1, false, HttpStatusCode.BadRequest, "32x32", TestName = "GenerateBase64_When_Invalid_Size_Fail")]
+    //[TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Failed Request")]
+    public async Task GenerateBase64(string prompt, int noOfImages, bool isSuccess, HttpStatusCode statusCode, string size)
+    {
             var response = await OpenAIService.Images.Generate(prompt ,o => {
                 o.N = noOfImages;
                 o.Size = size;
@@ -43,5 +43,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.Result?.Data?[0].Base64 != null,Is.EqualTo(isSuccess));
             Assert.That(response.ErrorResponse?.Error?.Message?.Contains("is not one of ['256x256', '512x512', '1024x1024', '1024x1792', '1792x1024']"), isSuccess ? Is.EqualTo(null) : Is.EqualTo(true), "Error message not returned");
         }
-    }
 }

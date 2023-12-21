@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.FilesService_Tests
+namespace OpenAI.Net.Tests.Services.FilesService_Tests ;
+
+internal class FileService_GetById : BaseServiceTest
 {
-    internal class FileService_GetById : BaseServiceTest
-    {
-        const string responseJson = @"
+    const string responseJson = @"
                                     {
                                         ""object"": ""file"",
                                         ""id"": ""file-GB1kRstIY1YqJQBZ6rkUVphO"",
@@ -19,10 +19,10 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GetById_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "GetById_When_Fail")]
-        public async Task GetById(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GetById_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "GetById_When_Fail")]
+    public async Task GetById(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files/1");
 
             var service = new FilesService(httpClient);
@@ -32,5 +32,4 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(response.Result?.Bytes == 207, Is.EqualTo(isSuccess));
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

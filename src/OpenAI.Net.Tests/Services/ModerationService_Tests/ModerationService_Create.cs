@@ -2,11 +2,11 @@
 using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.ModerationService_Tests
+namespace OpenAI.Net.Tests.Services.ModerationService_Tests ;
+
+internal class ModerationService_Create : BaseServiceTest
 {
-    internal class ModerationService_Create : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
   ""id"": ""modr-5MWoLO"",
   ""model"": ""text-moderation-001"",
   ""results"": [
@@ -36,10 +36,10 @@ namespace OpenAI.Net.Tests.Services.ModerationService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "Create_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Create_When_Fail")]
-        public async Task Create(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "Create_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Create_When_Fail")]
+    public async Task Create(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/moderations");
 
             var service = new ModerationService(httpClient);
@@ -69,10 +69,10 @@ namespace OpenAI.Net.Tests.Services.ModerationService_Tests
             AssertResponse(response,isSuccess,errorMessage,responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "CreateList_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "CreateList_When_Fail")]
-        public async Task CreateList(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "CreateList_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "CreateList_When_Fail")]
+    public async Task CreateList(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/moderations");
 
             var service = new ModerationService(httpClient);
@@ -102,10 +102,10 @@ namespace OpenAI.Net.Tests.Services.ModerationService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "CreateExtensionMethod_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "CreateExtensionMethod_When_Fail")]
-        public async Task CreateExtensionMethod(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "CreateExtensionMethod_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "CreateExtensionMethod_When_Fail")]
+    public async Task CreateExtensionMethod(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var jsonRequest = "";
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/moderations", "https://api.openai.com", (request) => {
                 jsonRequest = request.Content.ReadAsStringAsync().Result;
@@ -139,10 +139,10 @@ namespace OpenAI.Net.Tests.Services.ModerationService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "CreateListExtensionMethod_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "CreateListExtensionMethod_When_Fail")]
-        public async Task CreateListExtensionMethod(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "CreateListExtensionMethod_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "CreateListExtensionMethod_When_Fail")]
+    public async Task CreateListExtensionMethod(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var jsonRequest = "";
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/moderations", "https://api.openai.com", (request) => {
                 jsonRequest = request.Content.ReadAsStringAsync().Result;
@@ -175,5 +175,4 @@ namespace OpenAI.Net.Tests.Services.ModerationService_Tests
 
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

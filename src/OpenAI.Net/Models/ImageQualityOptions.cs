@@ -1,8 +1,7 @@
-﻿namespace OpenAI.Net
+﻿namespace OpenAI.Net ;
+
+public static class ImageQualityOptions
 {
-    public static class ImageQualityOptions
-    {
-        public const string Standard = "standard";
-        public const string HighDefinition = "hd";
-    }
+    public const string Standard       = "standard";
+    public const string HighDefinition = "hd";
 }

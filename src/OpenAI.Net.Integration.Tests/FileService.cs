@@ -2,22 +2,22 @@
 using OpenAI.Net.Models.Requests;
 using System.Net;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+internal class FileService : BaseTest
 {
-    internal class FileService : BaseTest
+    [Test]
+    public async Task GetAll()
     {
-        [Test]
-        public async Task GetAll()
-        {
            var response = await OpenAIService.Files.Get();
 
             Assert.That(response.IsSuccess, Is.EqualTo(true), "Request failed");
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
-        [Test]
-        public async Task Upload()
-        {
+    [Test]
+    public async Task Upload()
+    {
             var file = FileContentInfo.Load(@"Data\trainingData.jsonl");
             var response = await OpenAIService.Files.Upload(new FileUploadRequest(file, "fine-tune"));
 
@@ -25,9 +25,9 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
-        [Test]
-        public async Task Delete()
-        {
+    [Test]
+    public async Task Delete()
+    {
             var file = FileContentInfo.Load(@"Data\trainingData.jsonl");
             var response = await OpenAIService.Files.Upload(new FileUploadRequest(file, "fine-tune"));
 
@@ -40,9 +40,9 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(deleteResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
 
-        [Test]
-        public async Task GetById()
-        {
+    [Test]
+    public async Task GetById()
+    {
             var file = FileContentInfo.Load(@"Data\trainingData.jsonl");
             var response = await OpenAIService.Files.Upload(new FileUploadRequest(file, "fine-tune"));
 
@@ -64,9 +64,9 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(deleteResponse.Result?.Deleted, Is.EqualTo(true));
         }
 
-        [Test]
-        public async Task Remove()
-        {
+    [Test]
+    public async Task Remove()
+    {
             
             var file = FileContentInfo.Load(@"Data\trainingData.jsonl");
             var response = await OpenAIService.Files.Upload(new FileUploadRequest(file, "fine-tune"));
@@ -87,5 +87,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(deleteResponse.IsSuccess, Is.EqualTo(true), "Request failed");
             Assert.That(deleteResponse.StatusCode, Is.EqualTo(HttpStatusCode.OK));
         }
-    }
 }

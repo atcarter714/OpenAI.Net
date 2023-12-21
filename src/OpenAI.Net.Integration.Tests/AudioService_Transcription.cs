@@ -2,14 +2,14 @@
 using OpenAI.Net.Models.Requests;
 using System.Net;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+internal class AudioService_Transcription : BaseTest
 {
-    internal class AudioService_Transcription : BaseTest
+    [TestCase(ModelTypes.Whisper1,true, HttpStatusCode.OK ,TestName = "GetTranscription_When_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "GetTranscription_When_Fail")]
+    public async Task GetTranscription(string model, bool isSuccess, HttpStatusCode statusCode)
     {
-        [TestCase(ModelTypes.Whisper1,true, HttpStatusCode.OK ,TestName = "GetTranscription_When_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "GetTranscription_When_Fail")]
-        public async Task GetTranscription(string model,bool isSuccess, HttpStatusCode statusCode)
-        {
 
             var request = new CreateTranscriptionRequest(FileContentInfo.Load(@"Audio\TestTranscription.m4a"));
             request.Model = model;
@@ -24,9 +24,9 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That((response.Result?.Text?.Contains("3") ?? false) || (response.Result?.Text?.ToLowerInvariant().Contains("three") ?? false), Is.EqualTo(isSuccess), "Should contain the word 3 or three");
         }
 
-        [TestCase(ModelTypes.Whisper1, true, HttpStatusCode.OK, TestName = "GetTranscriptionWithExtension_When_Success")]
-        public async Task GetTranscriptionWithExtension(string model, bool isSuccess, HttpStatusCode statusCode)
-        {
+    [TestCase(ModelTypes.Whisper1, true, HttpStatusCode.OK, TestName = "GetTranscriptionWithExtension_When_Success")]
+    public async Task GetTranscriptionWithExtension(string model, bool isSuccess, HttpStatusCode statusCode)
+    {
 
             var response = await OpenAIService.Audio.GetTranscription(@"Audio\TestTranscription.m4a");
 
@@ -38,5 +38,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That((response.Result?.Text?.Contains("3") ?? false) || (response.Result?.Text?.ToLowerInvariant().Contains("three") ?? false), Is.EqualTo(isSuccess), "Should contain the word 3 or three");
         }
 
-    }
 }

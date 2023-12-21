@@ -4,13 +4,13 @@ using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models.Responses;
 using OpenAI.Net.Models.Responses.Common;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class FineTuneTests : BaseTest
 {
-    public class FineTuneTests : BaseTest
+    [Test]
+    public async Task Get()
     {
-        [Test]
-        public async Task Get()
-        {
             var responseObject = CreateObjectWithRandomData<FineTuneGetResponse>();
 
             ConfigureWireMockGet("/v1/fine-tunes", responseObject);
@@ -22,9 +22,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task GetById()
-        {
+    [Test]
+    public async Task GetById()
+    {
             var responseObject = CreateObjectWithRandomData<FineTuneResponse>();
             var fineTuneId = "1";
             ConfigureWireMockGet($"/v1/fine-tunes/{fineTuneId}", responseObject);
@@ -36,9 +36,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task Cancel()
-        {
+    [Test]
+    public async Task Cancel()
+    {
             var responseObject = CreateObjectWithRandomData<FineTuneResponse>();
             var fineTuneId = "1";
             ConfigureWireMockGet($"/v1/fine-tunes/{fineTuneId}/cancel", responseObject);
@@ -50,9 +50,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task GetEvents()
-        {
+    [Test]
+    public async Task GetEvents()
+    {
             var responseObject = CreateObjectWithRandomData<FineTuneEventsResponse>();
             var fineTuneId = "1";
             ConfigureWireMockGet($"/v1/fine-tunes/{fineTuneId}/events", responseObject);
@@ -64,9 +64,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task Create()
-        {
+    [Test]
+    public async Task Create()
+    {
             var fineTuneRequest = CreateObjectWithRandomData<FineTuneRequest>();
             var responseObject = CreateObjectWithRandomData<FineTuneResponse>();
             
@@ -79,9 +79,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task Delete()
-        {
+    [Test]
+    public async Task Delete()
+    {
             var responseObject = CreateObjectWithRandomData<DeleteResponse>();
 
             var model = "1";
@@ -92,5 +92,4 @@ namespace OpenAI.Net.Acceptance.Tests
             response.IsSuccess.Should().BeTrue();
             response.Result.Should().BeEquivalentTo(responseObject);
         }
-    }
 }

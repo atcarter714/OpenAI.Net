@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.ModelsService_Tests
+namespace OpenAI.Net.Tests.Services.ModelsService_Tests ;
+
+internal class ModelService_GetAll : BaseServiceTest
 {
-    internal class ModelService_GetAll : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                                     ""object"": ""list"",
                                     ""data"": [
                                         {
@@ -61,10 +61,10 @@ namespace OpenAI.Net.Tests.Services.ModelsService_Tests
             ";
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "Get_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Get_When_Fail")]
-        public async Task Get(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "Get_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Get_When_Fail")]
+    public async Task Get(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/models");
 
             var service = new ModelsService(httpClient);
@@ -72,5 +72,4 @@ namespace OpenAI.Net.Tests.Services.ModelsService_Tests
 
             Assert.That(response.Result?.Data?.Length == 2, Is.EqualTo(isSuccess));
         }
-    }
 }

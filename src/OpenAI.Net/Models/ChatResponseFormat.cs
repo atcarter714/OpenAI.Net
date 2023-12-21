@@ -1,8 +1,7 @@
-﻿namespace OpenAI.Net
+﻿namespace OpenAI.Net ;
+
+public static class ChatResponseFormat
 {
-    public static class ChatResponseFormat
-    {
-        public static readonly ChatResponseFormatType Text = new ChatResponseFormatType() { Type = "text" };
-        public static readonly ChatResponseFormatType Json = new ChatResponseFormatType() { Type = "json_object" };
-    }
+    public static readonly ChatResponseFormatType Text = new() { Type = "text" };
+    public static readonly ChatResponseFormatType Json = new() { Type = "json_object" };
 }

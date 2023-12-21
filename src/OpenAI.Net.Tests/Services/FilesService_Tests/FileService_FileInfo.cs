@@ -1,13 +1,13 @@
 ﻿using OpenAI.Net.Models;
 
-namespace OpenAI.Net.Tests.Services.FilesService_Tests
-{
-    internal class FileService_FileInfo : BaseServiceTest
-    {
+namespace OpenAI.Net.Tests.Services.FilesService_Tests ;
 
-        [Test]
-        public void FileInfoValidation_Null_Content()
-        {
+internal class FileService_FileInfo : BaseServiceTest
+{
+
+    [Test]
+    public void FileInfoValidation_Null_Content()
+    {
             bool exceptionOccured = false;
             string exceptionMessage = "";
 
@@ -25,9 +25,9 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(exceptionMessage, Is.EqualTo("FileContent is required"), "Incorrect error message retuned");
         }
 
-        [Test]
-        public void FileInfoValidation_Zero_Length_Content()
-        {
+    [Test]
+    public void FileInfoValidation_Zero_Length_Content()
+    {
             bool exceptionOccured = false;
             string exceptionMessage = "";
 
@@ -45,9 +45,9 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(exceptionMessage, Is.EqualTo("FileContent is required"),"Incorrect error message retuned");
         }
 
-        [Test]
-        public void FileInfoValidation_No_Filename()
-        {
+    [Test]
+    public void FileInfoValidation_No_Filename()
+    {
             bool exceptionOccured = false;
             string exceptionMessage = "";
 
@@ -65,9 +65,9 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(exceptionMessage, Is.EqualTo("FileName is required"), "Incorrect error message retuned");
         }
 
-        [Test]
-        public void FileInfoValidation_Load_InvalidPath()
-        {
+    [Test]
+    public void FileInfoValidation_Load_InvalidPath()
+    {
             bool exceptionOccured = false;
 
             try
@@ -83,5 +83,4 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             
         }
 
-    }
 }

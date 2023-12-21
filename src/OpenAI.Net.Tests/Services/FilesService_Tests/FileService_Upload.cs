@@ -5,11 +5,11 @@ using OpenAI.Net.Models.OperationResult;
 using OpenAI.Net.Models.Responses;
 using OpenAI.Net.Models.Responses.Common;
 
-namespace OpenAI.Net.Tests.Services.FilesService_Tests
+namespace OpenAI.Net.Tests.Services.FilesService_Tests ;
+
+internal class FileService_Upload : BaseServiceTest
 {
-    internal class FileService_Upload : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                                         ""object"": ""file"",
                                         ""id"": ""file-GB1kRstIY1YqJQBZ6rkUVphO"",
                                         ""purpose"": ""fine-tune"",
@@ -21,13 +21,13 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
                                     }
             ";
 
-        const string errorResponseJson = @"{""error"":{""message"":""an error occured"",""type"":""invalid_request_error"",""param"":""prompt"",""code"":""unsupported""}}";
+    const string errorResponseJson = @"{""error"":{""message"":""an error occured"",""type"":""invalid_request_error"",""param"":""prompt"",""code"":""unsupported""}}";
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "Upload_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", Description = "Failed Request", TestName = "Upload_When_Fail")]
-        public async Task Upload(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "Upload_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", Description = "Failed Request", TestName = "Upload_When_Fail")]
+    public async Task Upload(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files");
 
             var service = new FilesService(httpClient);
@@ -40,10 +40,10 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "UploadWithExtensionFilePath_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", Description = "Failed Request", TestName = "UploadWithExtensionFilePath_When_Fail")]
-        public async Task UploadWithExtensionFilePath(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "UploadWithExtensionFilePath_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", Description = "Failed Request", TestName = "UploadWithExtensionFilePath_When_Fail")]
+    public async Task UploadWithExtensionFilePath(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files");
 
             var service = new FilesService(httpClient);
@@ -53,11 +53,11 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "UploadWithExtensionFilePathAndName_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", Description = "Failed Request", TestName = "UploadWithExtensionFilePathAndName_When_Fail")]
-        [TestCase(false, HttpStatusCode.OK, responseJson, null, "invalid_path", TestName = "UploadWithExtensionFilePathAndName_When_Path_Invalid")]
-        public async Task UploadWithExtensionFilePathAndName(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, string filePath = @"Images\BabyCat.png")
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "UploadWithExtensionFilePathAndName_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", Description = "Failed Request", TestName = "UploadWithExtensionFilePathAndName_When_Fail")]
+    [TestCase(false, HttpStatusCode.OK, responseJson, null, "invalid_path", TestName = "UploadWithExtensionFilePathAndName_When_Path_Invalid")]
+    public async Task UploadWithExtensionFilePathAndName(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, string filePath = @"Images\BabyCat.png")
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files");
             bool exceptionRaised = false;
             OpenAIHttpOperationResult<FileInfoResponse, ErrorResponse> response = null;
@@ -80,11 +80,11 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, TestName = "UploadWithExtensionFileBytesAndName_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", TestName = "UploadWithExtensionFileBytesAndName_When_Fail")]
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, TestName = "UploadWithExtensionFileBytesAndName_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, errorResponseJson, "an error occured", TestName = "UploadWithExtensionFileBytesAndName_When_Fail")]
         
-        public async Task UploadWithExtensionFileBytesAndName(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage,string filePath = @"Images\BabyCat.png")
-        {
+    public async Task UploadWithExtensionFileBytesAndName(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage,string filePath = @"Images\BabyCat.png")
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files");
 
             var service = new FilesService(httpClient);
@@ -94,5 +94,4 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(response.Result?.Bytes == 207, Is.EqualTo(isSuccess));
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }

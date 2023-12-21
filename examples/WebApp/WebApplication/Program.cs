@@ -1,11 +1,11 @@
 using OpenAI.Net;
 
-namespace WebApplication
+namespace WebApplication ;
+
+public class Program
 {
-    public class Program
+    public static void Main(string[] args)
     {
-        public static void Main(string[] args)
-        {
             var builder = Microsoft.AspNetCore.Builder.WebApplication.CreateBuilder(args);
 
             // Add services to the container.
@@ -35,5 +35,4 @@ namespace WebApplication
 
             app.Run();
         }
-    }
 }

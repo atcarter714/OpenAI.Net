@@ -4,14 +4,14 @@ using OpenAI.Net.Models.Requests;
 using System.Net;
 using System.Text.Json;
 
-namespace OpenAI.Net.Integration.Tests
+namespace OpenAI.Net.Integration.Tests ;
+
+public class ChatCompletionService_Create : BaseTest
 {
-    public class ChatCompletionService_Create : BaseTest
+    [TestCase(ModelTypes.GPT35Turbo, true, HttpStatusCode.OK, TestName = "Get_When_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Get_When_Fail")]
+    public async Task Get(string model, bool isSuccess, HttpStatusCode statusCode)
     {
-        [TestCase(ModelTypes.GPT35Turbo, true, HttpStatusCode.OK, TestName = "Get_When_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Get_When_Fail")]
-        public async Task Get(string model, bool isSuccess, HttpStatusCode statusCode)
-        {
             var messages = new List<Message>
             {
                 Message.Create(ChatRoleType.User, "Say this is a test")
@@ -33,10 +33,10 @@ namespace OpenAI.Net.Integration.Tests
             }
         }
 
-        [TestCase(ModelTypes.Gpt3_5Turbo1106, true, HttpStatusCode.OK, TestName = "Get_When_Success_Json_Object")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Get_When_Fail_Json_Object")]
-        public async Task Get_Json_Object(string model, bool isSuccess, HttpStatusCode statusCode)
-        {
+    [TestCase(ModelTypes.Gpt3_5Turbo1106, true, HttpStatusCode.OK, TestName = "Get_When_Success_Json_Object")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "Get_When_Fail_Json_Object")]
+    public async Task Get_Json_Object(string model, bool isSuccess, HttpStatusCode statusCode)
+    {
             var messages = new List<Message>
             {
                 Message.Create(ChatRoleType.User, "Say this is a test, return response in json")
@@ -60,10 +60,10 @@ namespace OpenAI.Net.Integration.Tests
             }
         }
 
-        [TestCase(ModelTypes.GPT35Turbo, true, HttpStatusCode.OK, TestName = "GetWithListExtension_When_Success")]
-        [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "GetWithListExtension_When_Fail")]
-        public async Task GetWithListExtension(string model, bool isSuccess, HttpStatusCode statusCode)
-        {
+    [TestCase(ModelTypes.GPT35Turbo, true, HttpStatusCode.OK, TestName = "GetWithListExtension_When_Success")]
+    [TestCase("invalid_model", false, HttpStatusCode.NotFound, TestName = "GetWithListExtension_When_Fail")]
+    public async Task GetWithListExtension(string model, bool isSuccess, HttpStatusCode statusCode)
+    {
             var messages = new List<Message>
             {
                 Message.Create(ChatRoleType.System, "You are a helpful assistant."),
@@ -86,9 +86,9 @@ namespace OpenAI.Net.Integration.Tests
             }
         }
 
-        [Test]
-        public async Task TetEditReplacement()
-        {
+    [Test]
+    public async Task TetEditReplacement()
+    {
             var messages = new List<Message>
             {
                 Message.Create(ChatRoleType.System, "You are a spell checker. Fix the spelling mistakes"),
@@ -102,5 +102,4 @@ namespace OpenAI.Net.Integration.Tests
             Assert.That(response.IsSuccess, Is.True);
             Assert.That(response.Result?.Choices[0].Message.Content, Is.EqualTo("What day of the week is it?"));
         }
-    }
 }

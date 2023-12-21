@@ -141,8 +141,9 @@ namespace OpenAI.Net
 {
     public class Message
     {
-        private static readonly string[] _validRoles = new string[] { ChatRoleType.User, ChatRoleType.System, ChatRoleType.Assistant };
-        private Message(string role, string content)
+        static readonly string[] _validRoles = new string[] { ChatRoleType.User, ChatRoleType.System, ChatRoleType.Assistant };
+
+        Message(string role, string content)
         {
             Role = role;
             Content = content;

@@ -3,11 +3,11 @@ using System.Net;
 using OpenAI.Net.Services;
 using OpenAI.Net.Models;
 
-namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
+namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests ;
+
+internal class TextCompletionService_GetStream : BaseServiceTest
 {
-    internal class TextCompletionService_GetStream : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                 ""id"": ""cmpl-6PtAJQgmP51aSZDoG1PFuorDwP9aZ"",
                 ""object"": ""text_completion"",
                 ""created"": 1671628275,
@@ -27,18 +27,18 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
                 }
             }";
 
-        [SetUp]
-        public void Setup()
-        {
+    [SetUp]
+    public void Setup()
+    {
         }
 
 
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetStream_When_Success")]
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetStream_When_Using_Line_Data_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, Description = "Failed Request", TestName = "GetStream_When_Using_Fail")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetStream_When_Invalid_Model_Fail")]
-        public async Task GetStream(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
-        {
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetStream_When_Success")]
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetStream_When_Using_Line_Data_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, Description = "Failed Request", TestName = "GetStream_When_Using_Fail")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetStream_When_Invalid_Model_Fail")]
+    public async Task GetStream(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
+    {
             responseJson = responseJson.Replace("\r\n", "").Replace("\n", "");
 
             if (useMultiLineData)
@@ -92,12 +92,12 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
             }
         }
 
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetListStream_When_Success")]
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetListStream_When_Using_Line_Data_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, Description = "Failed Request", TestName = "GetListStream_When_Using_Fail")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetListStream_When_Invalid_Model_Fail")]
-        public async Task GetListStream(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
-        {
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetListStream_When_Success")]
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetListStream_When_Using_Line_Data_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, Description = "Failed Request", TestName = "GetListStream_When_Using_Fail")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetListStream_When_Invalid_Model_Fail")]
+    public async Task GetListStream(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
+    {
             responseJson = responseJson.Replace("\r\n", "").Replace("\n", "");
 
             if (useMultiLineData)
@@ -151,11 +151,11 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
             }
         }
 
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetStreamWithOptions_When_Success")]
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetStreamWithOptions_When_Using_Line_Data_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetStreamWithOptions_When_Invalid_Model_Fail")]
-        public async Task GetStreamWithOptions(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
-        {
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetStreamWithOptions_When_Success")]
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetStreamWithOptions_When_Using_Line_Data_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetStreamWithOptions_When_Invalid_Model_Fail")]
+    public async Task GetStreamWithOptions(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
+    {
             responseJson = responseJson.Replace("\r\n", "").Replace("\n", "");
 
             if (useMultiLineData)
@@ -211,11 +211,11 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
             }
         }
 
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetListStreamWithOptions_When_Success")]
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetListStreamWithOptions_When_Using_Line_Data_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetListStreamWithOptions_When_Invalid_Model_Fail")]
-        public async Task GetListStreamWithOptions(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = ModelTypes.TextDavinci003)
-        {
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetListStreamWithOptions_When_Success")]
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetListStreamWithOptions_When_Using_Line_Data_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetListStreamWithOptions_When_Invalid_Model_Fail")]
+    public async Task GetListStreamWithOptions(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = ModelTypes.TextDavinci003)
+    {
             responseJson = responseJson.Replace("\r\n", "").Replace("\n", "");
 
             if (useMultiLineData)
@@ -271,11 +271,11 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
             }
         }
 
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetStreamWithOptions_When_Success")]
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetStreamWithOptions_When_Using_Line_Data_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetStreamWithOptions_When_Invalid_Model_Fail")]
-        public async Task GetStreamWithOptionsAndDefaultModel(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
-        {
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetStreamWithOptions_When_Success")]
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetStreamWithOptions_When_Using_Line_Data_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetStreamWithOptions_When_Invalid_Model_Fail")]
+    public async Task GetStreamWithOptionsAndDefaultModel(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
+    {
             OpenAIDefaults.TextCompletionModel = modelName;
 
             responseJson = responseJson.Replace("\r\n", "").Replace("\n", "");
@@ -333,11 +333,11 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
             }
         }
 
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetListStreamWithOptions_When_Success")]
-        [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetListStreamWithOptions_When_Using_Line_Data_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetListStreamWithOptions_When_Invalid_Model_Fail")]
-        public async Task GetListStreamWithOptionsAndDefaultModel(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
-        {
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, false, Description = "Successfull Request", TestName = "GetListStreamWithOptions_When_Success")]
+    [TestCase(true, HttpStatusCode.OK, $"{responseJson}", null, true, 2, Description = "Successfull Request Multiline", TestName = "GetListStreamWithOptions_When_Using_Line_Data_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", false, 0, null, Description = "Failed Request Validation", TestName = "GetListStreamWithOptions_When_Invalid_Model_Fail")]
+    public async Task GetListStreamWithOptionsAndDefaultModel(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage, bool useMultiLineData, int expectedItemCount = 1, string modelName = "text-davinci-003")
+    {
             OpenAIDefaults.TextCompletionModel = modelName;
 
             responseJson = responseJson.Replace("\r\n", "").Replace("\n", "");
@@ -394,5 +394,4 @@ namespace OpenAI.Net.Tests.Services.TextCompletionService_Tests
                 Assert.That(jsonRequest.Contains("model", StringComparison.OrdinalIgnoreCase), Is.EqualTo(true), "Serialzation options are incorrect, camel case should be used");
             }
         }
-    }
 }

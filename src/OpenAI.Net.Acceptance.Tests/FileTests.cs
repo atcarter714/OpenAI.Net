@@ -5,13 +5,13 @@ using OpenAI.Net.Models.Requests;
 using OpenAI.Net.Models.Responses;
 using OpenAI.Net.Models.Responses.Common;
 
-namespace OpenAI.Net.Acceptance.Tests
+namespace OpenAI.Net.Acceptance.Tests ;
+
+public class FileTests : BaseTest
 {
-    public class FileTests : BaseTest
+    [Test]
+    public async Task Get()
     {
-        [Test]
-        public async Task Get()
-        {
             var responseObject = CreateObjectWithRandomData<FileListResponse>();
 
             ConfigureWireMockGet("/v1/files", responseObject);
@@ -23,9 +23,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task GetById()
-        {
+    [Test]
+    public async Task GetById()
+    {
             var responseObject = CreateObjectWithRandomData<FileInfoResponse>();
             var fileId = "1";
             ConfigureWireMockGet($"/v1/files/{fileId}", responseObject);
@@ -36,9 +36,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]
-        public async Task GetContent()
-        {
+    [Test]
+    public async Task GetContent()
+    {
             var responseObject = CreateObjectWithRandomData<FileContentInfo>();
             var fileId = "1";
             ConfigureWireMockGetBytes($"/v1/files/{fileId}/content", responseObject);
@@ -50,9 +50,9 @@ namespace OpenAI.Net.Acceptance.Tests
         }
 
 
-        [Test]
-        public async Task Delete()
-        {
+    [Test]
+    public async Task Delete()
+    {
             var responseObject = CreateObjectWithRandomData<DeleteResponse>();
 
             var fileId = "1";
@@ -64,9 +64,9 @@ namespace OpenAI.Net.Acceptance.Tests
             response.Result.Should().BeEquivalentTo(responseObject);
         }
 
-        [Test]//QQQ
-        public async Task Upload()
-        {
+    [Test] //QQQ
+    public async Task Upload()
+    {
             var textCompletionRequest = CreateObjectWithRandomData<FileUploadRequest>();
             var textCompletionResponse = CreateObjectWithRandomData<FileInfoResponse>();
 
@@ -77,5 +77,4 @@ namespace OpenAI.Net.Acceptance.Tests
             response.IsSuccess.Should().BeTrue();
             response.Result.Should().BeEquivalentTo(textCompletionResponse);
         }
-    }
 }

@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.FineTuneService_Tests
+namespace OpenAI.Net.Tests.Services.FineTuneService_Tests ;
+
+internal class FineTuningService_GetEvents : BaseServiceTest
 {
-    internal class FineTuningService_GetEvents : BaseServiceTest
-    {
-        const string responseJson = @"{
+  const string responseJson = @"{
   ""object"": ""list"",
   ""data"": [
     {
@@ -42,10 +42,10 @@ namespace OpenAI.Net.Tests.Services.FineTuneService_Tests
 }
             ";
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GetEvents_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Get_When_Fail")]
-        public async Task GetEvents(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+  [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request", TestName = "GetEvents_When_Success")]
+  [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "Get_When_Fail")]
+  public async Task GetEvents(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+  {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/fine-tunes/fineTuneId/events");
             var service = new FineTuneService(httpClient);
             var response = await service.GetEvents("fineTuneId");
@@ -57,5 +57,4 @@ namespace OpenAI.Net.Tests.Services.FineTuneService_Tests
 
             AssertResponse(response,isSuccess,errorMessage,responseStatusCode);
         }
-    }
 }

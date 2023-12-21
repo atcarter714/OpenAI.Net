@@ -1,11 +1,11 @@
 ﻿using System.Net;
 using OpenAI.Net.Services;
 
-namespace OpenAI.Net.Tests.Services.FilesService_Tests
+namespace OpenAI.Net.Tests.Services.FilesService_Tests ;
+
+internal class FileService_GetAll : BaseServiceTest
 {
-    internal class FileService_GetAll : BaseServiceTest
-    {
-        const string responseJson = @"{
+    const string responseJson = @"{
                                 ""object"": ""list"",
                                 ""data"": [
                                     {
@@ -34,10 +34,10 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
 
 
 
-        [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "GetAll_When_Success")]
-        [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GetAll_When_Fail")]
-        public async Task GetAll(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
-        {
+    [TestCase(true, HttpStatusCode.OK, responseJson, null, Description = "Successfull Request",TestName = "GetAll_When_Success")]
+    [TestCase(false, HttpStatusCode.BadRequest, ErrorResponseJson, "an error occured", Description = "Failed Request", TestName = "GetAll_When_Fail")]
+    public async Task GetAll(bool isSuccess, HttpStatusCode responseStatusCode, string responseJson, string errorMessage)
+    {
             var httpClient = GetHttpClient(responseStatusCode, responseJson, "/v1/files");
 
             var service = new FilesService(httpClient);
@@ -46,5 +46,4 @@ namespace OpenAI.Net.Tests.Services.FilesService_Tests
             Assert.That(response.Result?.Data?.Length == 2, Is.EqualTo(isSuccess));
             AssertResponse(response, isSuccess, errorMessage, responseStatusCode);
         }
-    }
 }
